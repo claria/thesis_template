@@ -1,0 +1,219 @@
+% language support
+\usepackage[english, ngerman]{babel}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+
+\usepackage{lmodern}
+
+% absolute text positioning
+\usepackage{textpos}
+
+% simple programming stuff like ifdef
+\usepackage{etoolbox}
+
+% dummy text
+\usepackage{lipsum}
+
+% used to modify geometry of titlepage
+\usepackage[pass]{geometry}
+
+% usual inner/outer margins for print version
+% but symmetric margins for online version
+\ifdef{\hardcopy}{
+\KOMAoptions{twoside=true}
+\KOMAoptions{BCOR=0cm}
+}{
+\KOMAoptions{twoside=semi}
+\KOMAoptions{BCOR=0cm}
+}
+
+% Microtype options
+\usepackage[activate={true,nocompatibility},final,tracking=false,kerning=true,spacing=true,factor=1100,stretch=10,shrink=10]{microtype}
+\DisableLigatures[f]{encoding = *, family = * }
+% activate={true,nocompatibility} - activate protrusion and expansion
+% final - enable microtype; use "draft" to disable
+% tracking=true, kerning=true, spacing=true - activate these techniques
+% factor=1100 - add 10% to the protrusion amount (default is 1000)
+% stretch=10, shrink=10 - reduce stretchability/shrinkability (default is 20/20)
+
+% side captions
+\usepackage[rightcaption]{sidecap}
+\sidecaptionvpos{figure}{c}
+
+% consistent SI units
+\usepackage{siunitx}
+\DeclareSIUnit[] \pbinv{\per \pico \barn}
+\DeclareSIUnit[] \fbinv{\per \femto \barn}
+
+% math packages and symbols
+\usepackage{amsmath,amssymb,amstext,amsthm,bm}
+% diagonal lines through math symbols/formulas
+\usepackage{cancel}
+% nice fractions for inline equations
+\usepackage{xfrac}
+\DeclareMathOperator\erf{erf}
+\DeclareMathOperator\sgn{sgn}
+
+% graphics support
+\usepackage{graphicx}
+% advanced hyphenation support
+\usepackage{hyphenat}
+
+% defines font for textsc replacement
+\normalfont
+\DeclareFontShape{T1}{lmr}{bx}{sc} { <-> ssub * cmr/bx/sc }{}
+
+% table options
+\usepackage{multicol}
+\usepackage{multirow}
+\usepackage{makecell}
+\usepackage{booktabs}
+\usepackage{xspace}
+\usepackage{tabularx}
+\usepackage[usenames,dvipsnames,table,hyperref]{xcolor}
+
+% style of table ofcontents, list of figures, list of tables 
+\usepackage[titles]{tocloft}
+\setlength{\cftfignumwidth}{3.2em}
+\setlength{\cfttabnumwidth}{3.2em}
+\setlength{\cftbeforepartskip}{0em}
+\setlength{\cftbeforechapskip}{.5\baselineskip}
+
+% biblatex with biber
+\usepackage[
+        natbib=true,
+        style=numeric-comp,
+        sorting=none,
+        backend=biber,
+        doi=true,
+        url=false,
+        maxcitenames=2,
+        maxbibnames=3]{biblatex}
+
+% bib resource file
+\addbibresource{papers.bib}
+
+% Prevent trouble from citations in table of contents, etc
+\usepackage{notoccite}
+
+% adapts style of bibtex entries
+\renewbibmacro{in:}{}
+% online title upright
+\DeclareFieldFormat[online]{title}{\mkbibquote{#1}}
+\DeclareFieldFormat[report]{title}{\mkbibquote{#1}}
+\DeclareFieldFormat[book]{title}{\mkbibquote{#1}}
+% new line for doi
+\DeclareFieldFormat{doi}{%
+  \newline
+  \mkbibacro{DOI}\addcolon\space
+    \ifhyperref
+      {\href{http://dx.doi.org/#1}{\nolinkurl{#1}}}
+      {\nolinkurl{#1}}}
+
+% use collaboration instead of author if available
+\DeclareSourcemap{
+  \maps[datatype=bibtex]{
+    \map{
+      \step[fieldsource=Collaboration, match=\regexp{([^,]+)}, fieldset=usera, fieldvalue={$1 Collaboration}, final=true]
+    }
+  }
+}
+\renewbibmacro*{author}{%
+  \iffieldundef{usera}{%
+    \printnames{author}%
+  }{%
+      \printfield{usera}%
+  }%
+}%
+
+% page header style
+\usepackage[headsepline]{scrlayer-scrpage} 
+\pagestyle{scrheadings} 
+\renewcommand*{\chaptermarkformat}{}
+
+\usepackage{float}
+
+% Customising captions in floating environments
+\usepackage[labelfont={bf}]{caption}
+\captionsetup[table]{skip=5pt}
+\usepackage{subcaption}
+\captionsetup{subrefformat=parens}
+
+\addtokomafont{caption}{\small}
+\addtokomafont{disposition}{\boldmath}
+\setcapindent{1em}
+
+% Control float placement
+\usepackage[section]{placeins}
+
+% Verbatim with URL-sensitive line breaks
+\usepackage{url}
+
+% allow dots in graphics filenames
+\usepackage{grffile}
+\DeclareGraphicsExtensions{.pdf,.png,.jpg}
+
+% todo notes
+\usepackage[
+    colorinlistoftodos, 
+    shadow, 
+    disable,
+    figwidth=.75\textwidth]{todonotes}
+\providecommand{\todoi}[1]{\todo[inline]{#1}}
+
+%Typeset source code listings using LATEX
+\usepackage{listings} 
+\lstset{numbers=left, numberstyle=\tiny, numbersep=5pt} 
+
+% Extensive support for hypertext in LATEX
+\usepackage[pdftex,
+    linktoc=all,
+    \ifdef{\hardcopy}{hidelinks}{colorlinks=true},
+    breaklinks=true,
+    pdftitle={Triple-Differential Dijet Cross Sections and PDF Constraints},
+    pdfauthor={Georg Sieber},
+    pdfsubject={Particle physics},
+    pdfkeywords={CERN, LHC, CMS, jets, particle physics, PDF},
+    hyperindex,
+    pdfpagemode=UseNone,
+    bookmarksopen=true]{hyperref}
+\hypersetup{
+    linkcolor=[RGB]{0, 28, 127},
+    urlcolor=[RGB]{0, 28, 127},
+    citecolor=[RGB]{0, 28, 127}
+}
+
+% Create glossaries and lists of acronyms
+% \usepackage[nomain,
+%     acronym,
+%     xindy,
+%     toc,
+%     section=chapter,
+%     numberedsection=nolabel]{glossaries} 
+% \makeglossaries 
+
+
+% defines the style of the chapter headings
+% chapter style, requires chapterprefix=true
+\newcommand\titlerule[1][1pt]{\rule{\textwidth}{#1}}
+\renewcommand*{\chapterformat}{%
+  \parbox{\textwidth}{\Large\hfill\MakeUppercase{\chapappifchapterprefix{\,}} \Huge\thechapter\enskip}}
+  \renewcommand\chapterlineswithprefixformat[3]{%
+    #2\nobreak%
+    \ifstr{#2}{}{}{\vspace*{-\dp\strutbox}}%
+    \titlerule\par\vspace{2ex}\nobreak%
+    {\LARGE\centering#3}%
+    \vspace{2ex}\nobreak\titlerule\vspace{1ex}%
+  }
+\addtokomafont{disposition}{\normalfont\bfseries}
+\addtokomafont{chapterprefix}{\bfseries\scshape}
+\RedeclareSectionCommand[beforeskip=0pt,afterskip=1cm]{chapter}
+
+\input{includes/abbrev}
+
+\usepackage{scrhack}
+% ignores pdflatex warning which occurs for matplotlib plots and is a false warning
+\pdfsuppresswarningpagegroup=1
+
+% includes macros for commonly used symbols
+\input{includes/shortcuts.tex}

@@ -1,0 +1,41 @@
+\documentclass[a4paper,
+    twoside=true,
+    titlepage,
+    english,
+    toc=listofnumbered,
+    chapterprefix=true,
+    numbers=noendperiod,
+    % draft=true,
+    % parskip=half,
+    toc=bibliographynumbered]{scrbook}
+
+%packages
+\input{includes/header}
+
+\begin{document}
+
+\selectlanguage{english}
+
+\setcounter{page}{1} \pagenumbering{Roman} 
+\input{includes/titlepage}
+\input{includes/abstract}
+
+\setcounter{page}{1} \pagenumbering{arabic} 
+
+\tableofcontents
+
+\input{chapters/introduction}
+
+\cleardoublepage
+\listoftodos
+
+\begin{appendix}
+\input{chapters/appendix}
+\end{appendix}
+
+\input{includes/final}
+
+\input{includes/acknowledgements}
+\input{includes/erklaerung}
+\end{document}
+
